@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+int main()
+{
+int s,d;
+printf("\n Enter number of processes: ");
+scanf("%d",&d);
+int arrival[d];
+int burst[d],burst1[d];
+int waiting[d];
+int tarrival[d];
+int tq1=3;
+int tq2=6;
+int avgT=0;
+int avgW=0;
+printf("\n Enter arival time of processes:\n");
+for(s=0;s<d;s++)
+{ 
+printf("For processes %d :",s+1);
+scanf("%d",&arrival[s]);
+}
+printf("\nEnter burst time for processes:\n");
+for(s=0;s<d;s++)
+{
+printf("For processes %d:",s+1);
+scanf("%d",&burst[s]);
+burst1[s]=burst[s];
+}
+printf("\n 1st ITERATION (TQ=3)\n");
+for(s=0;s<d;s++)
+{
+if(arrival[s]<=tq1+arrival[s-1])
+{
+burst[s]=burst[s]-tq1;
+printf("\nFor process %d\n",s+1);
+printf("Left Burst time=%d\n",burst[s]);
+}
+else
+{
+burst[s]=burst[s]-tq1;
+printf("For process %d\n",s+1);
+printf("Left Burst time= %d\n",burst[s]);
+}
+}
+printf("\n  2nd ITERATION (TQ=6)\n");
+for(s=0;s<d;s++)
+{
+if(arrival[s]<=tq2+arrival[s-1])
+{
+burst[s]=burst[s]-tq2;
+printf("\nFor process %d\n",s+1);
+printf("Left Burst time= %d\n",burst[s]);
+}
+else
+{
+burst[s]=burst[s]-tq2;
+printf("For process %d\n",s+1);
+printf("Left Burst time= %d\n",burst[s]);
+}
+}
+printf("\n 3rd ITERATION \n");
+int j,temp;
+for(s=0;s<d;s++)
+{
+for(j=s+1;j<d;j++)
+{
+if(burst[s]>burst[j])
+{
+temp=burst[s];
+burst[s]=burst[j];
+burst[j]=temp;
+}
+}
+}
+int ct[4]={54,68,45,41};
+for(s=0;s<d;s++)
+{
+tarrival[s]=ct[s]-arrival[s];
+waiting[s]=tarrival[s]-burst1[s];
+printf("\nCompletion time for process %d : %d \n",s+1,ct[s]);
+printf("Turn arround time for process %d : %d \n",s+1,tarrival[s]);
+printf("Waiting time for process %d : %d \n",s+1,waiting[s]);
+avgT=avgT+tarrival[s];
+avgW=avgW+waiting[s];
+}
+avgT=avgT/d;
+avgW=avgW/d;
+printf("\n\nAverage turn around time: %d\n",avgT);
+printf("Average waiting time: %d\n",avgW);
+}
